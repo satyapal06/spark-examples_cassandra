@@ -34,6 +34,6 @@ public class Temperature {
 		});
 		
 		JavaRDD<Integer> maximumTemperaturesRdd = context.parallelize(maximumTemperatures);
-		maximumTemperaturesRdd.saveAsTextFile(args[1]);
+		maximumTemperaturesRdd.saveAsTextFile(args[0]);
 	}
 }
