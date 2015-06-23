@@ -21,3 +21,8 @@ where
     <path to output directory> is the directory where the resuls should be saved
 
 If everything is fine the output should be similar to the following image and we should find the file part-00000 in the output directory.
+
+
+#Running Temperature!
+
+./bin/spark-submit --class org.sparkredisexample.Temperature --master local satyapal/spark-examples_cassandra/target/spark-examples_cassandra-0.0.1-SNAPSHOT.jar satyapal/output
