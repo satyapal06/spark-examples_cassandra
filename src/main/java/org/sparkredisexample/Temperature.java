@@ -14,11 +14,13 @@ import redis.clients.jedis.Jedis;
 public class Temperature {
 	
 	public static void main(String[] args) {
-		final Jedis jedis = new Jedis("localhost");
+		Jedis jedis = new Jedis("localhost");
 		List<String> list = jedis.lrange("temperature-list", 0, 1000000);
+		jedis.close();
 		SparkConf conf = new SparkConf().setAppName("org.sparkredisexample.Temperature").setMaster("local");
 		JavaSparkContext context = new JavaSparkContext(conf);
 		JavaRDD<String> listRdd = context.parallelize(list);
+		final List<Integer> maximumTemperatures = new ArrayList<Integer>();
 		listRdd.foreach(new VoidFunction<String>() {
 			private static final long serialVersionUID = 1L;
 			public void call(String line) {
@@ -27,11 +29,12 @@ public class Temperature {
 				Integer temperatureValue = Integer.valueOf(temperature);
 				System.out.println(temperatureValue);
 				if(temperatureValue > 40) {
-					jedis.lpush("max-temperature-list", line);
+					maximumTemperatures.add(temperatureValue);
 				}
 			}
 		});
 		
-		jedis.close();
+		JavaRDD<Integer> maximumTemperaturesRdd = context.parallelize(maximumTemperatures);
+		maximumTemperaturesRdd.saveAsTextFile(args[0]);
 	}
 }
