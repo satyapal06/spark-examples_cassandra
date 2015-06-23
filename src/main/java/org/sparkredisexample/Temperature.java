@@ -27,6 +27,7 @@ public class Temperature {
 				List<String> list = Arrays.asList(line.split(","));
 				String temperature = list.get(1);
 				Integer temperatureValue = Integer.valueOf(temperature);
+				System.out.println(temperatureValue);
 				if(temperatureValue > 40) {
 					maximumTemperatures.add(temperatureValue);
 				}
